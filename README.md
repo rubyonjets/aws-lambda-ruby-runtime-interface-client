@@ -1,17 +1,19 @@
 ## AWS Lambda Ruby Runtime Interface Client
 
+For the reason for this fork, see: [README.jets.md](/README.jets.md)
+
 We have open-sourced a set of software packages, Runtime Interface Clients (RIC), that implement the Lambda
  [Runtime API](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html), allowing you to seamlessly extend your preferred
   base images to be Lambda compatible.
 The Lambda Runtime Interface Client is a lightweight interface that allows your runtime to receive requests from and send requests to the Lambda service.
 
-The Lambda Ruby Runtime Interface Client is vended through [rubygems](https://rubygems.org/gems/aws_lambda_ric). 
+The Lambda Ruby Runtime Interface Client is vended through [rubygems](https://rubygems.org/gems/aws_lambda_ric).
 You can include this package in your preferred base image to make that base image Lambda compatible.
 
 ## Requirements
 The Ruby Runtime Interface Client package currently supports Ruby versions:
  - 2.5.x up to and including 2.7.x
- 
+
 ## Usage
 
 ### Creating a Docker Image for Lambda with the Runtime Interface Client
@@ -88,18 +90,18 @@ end
 
 ### Local Testing
 
-To make it easy to locally test Lambda functions packaged as container images we open-sourced a lightweight web-server, Lambda Runtime Interface Emulator (RIE), which allows your function packaged as a container image to accept HTTP requests. You can install the [AWS Lambda Runtime Interface Emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator) on your local machine to test your function. Then when you run the image function, you set the entrypoint to be the emulator. 
+To make it easy to locally test Lambda functions packaged as container images we open-sourced a lightweight web-server, Lambda Runtime Interface Emulator (RIE), which allows your function packaged as a container image to accept HTTP requests. You can install the [AWS Lambda Runtime Interface Emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator) on your local machine to test your function. Then when you run the image function, you set the entrypoint to be the emulator.
 
 *To install the emulator and test your Lambda function*
 
-1) From your project directory, run the following command to download the RIE from GitHub and install it on your local machine. 
+1) From your project directory, run the following command to download the RIE from GitHub and install it on your local machine.
 
 ```shell script
 mkdir -p ~/.aws-lambda-rie && \
     curl -Lo ~/.aws-lambda-rie/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie && \
     chmod +x ~/.aws-lambda-rie/aws-lambda-rie
 ```
-2) Run your Lambda image function using the docker run command. 
+2) Run your Lambda image function using the docker run command.
 
 ```shell script
 docker run -d -v ~/.aws-lambda-rie:/aws-lambda -p 9000:8080 \
@@ -108,9 +110,9 @@ docker run -d -v ~/.aws-lambda-rie:/aws-lambda -p 9000:8080 \
         /usr/local/bin/aws_lambda_ric app.App::Handler.process
 ```
 
-This runs the image as a container and starts up an endpoint locally at `http://localhost:9000/2015-03-31/functions/function/invocations`. 
+This runs the image as a container and starts up an endpoint locally at `http://localhost:9000/2015-03-31/functions/function/invocations`.
 
-3) Post an event to the following endpoint using a curl command: 
+3) Post an event to the following endpoint using a curl command:
 
 ```shell script
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
